@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "schedule": {
+        "type": "simple",
+        "interval": "1s"
+    },
+    "workflow": {
+        "collect": {
+            "metrics": {
+                "/staples/netstat/tcp_close" : {},
+                "/staples/netstat/tcp_close_wait" : {},
+                "/staples/netstat/tcp_closing" : {},
+                "/staples/netstat/tcp_established" : {},
+                "/staples/netstat/tcp_fin_wait1" : {},
+                "/staples/netstat/tcp_fin_wait2" : {},
+                "/staples/netstat/tcp_last_ack" : {},
+                "/staples/netstat/tcp_listen" : {},
+                "/staples/netstat/tcp_none" : {},
+                "/staples/netstat/tcp_syn_recv" : {},
+                "/staples/netstat/tcp_syn_sent" : {},
+                "/staples/netstat/tcp_time_wait" : {},
+                "/staples/netstat/udp_socket" : {}
+            },
+            "config": {
+            },
+            "process": [
+                {
+                    "plugin_name": "passthru",
+                    "plugin_version": 1,
+                    "process": null,
+                    "publish": [
+                        {
+                            "plugin_name": "file",
+                            "plugin_version": 3,
+                            "config": {
+                                "file": "/tmp/snap-file.out"
+                            }
+                        }
+                    ],
+                    "config": null
+                }
+            ],
+            "publish": null
+        }
+    }
+}
