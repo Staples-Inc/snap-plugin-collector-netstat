@@ -47,11 +47,11 @@ func (netstat *netstatPlugin) GetConfigPolicy() (*cpolicy.ConfigPolicy, error) {
 func (netstat *netstatPlugin) GetMetricTypes(cfg plugin.ConfigType) (metrics []plugin.MetricType, err error) {
 	fields, err := getStats()
 	if err != nil {
-		return nil, fmt.Errorf("Errpr collecting metrics: %v", err)
+		return nil, fmt.Errorf("Error collecting metrics: %v", err)
 	}
 
 	for name, _ := range fields {
-		ns := core.NewNamespace(vendor, fs, name)
+		ns := core.NewNamespace(vendor, "os", fs, name)
 		metric := plugin.MetricType{
 			Namespace_: ns,
 			Data_:      nil,
@@ -65,15 +65,15 @@ func (netstat *netstatPlugin) GetMetricTypes(cfg plugin.ConfigType) (metrics []p
 func (netstat *netstatPlugin) CollectMetrics(metricTypes []plugin.MetricType) (metrics []plugin.MetricType, err error) {
 	fields, err := getStats()
 	if err != nil {
-		return nil, fmt.Errorf("Errpr collecting metrics: %v", err)
+		return nil, fmt.Errorf("Error collecting metrics: %v", err)
 	}
 
 	for _, metricType := range metricTypes {
 		ns := metricType.Namespace()
 
-		val, err := getMapValueByNamespace(fields, ns[2:].Strings())
+		val, err := getMapValueByNamespace(fields, ns[3:].Strings())
 		if err != nil {
-			return nil, fmt.Errorf("Errpr collecting metrics: %v", err)
+			return nil, fmt.Errorf("Error collecting metrics: %v", err)
 		}
 
 		metric := plugin.MetricType{
