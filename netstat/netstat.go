@@ -1,16 +1,14 @@
 package netstat
 
 import (
-	// log "github.com/Sirupsen/logrus"
-
 	"fmt"
-	// "github.com/intelsdi-x/snap-plugin-utilities/ns"
+	"syscall"
+	"time"
+
 	"github.com/intelsdi-x/snap/control/plugin"
 	"github.com/intelsdi-x/snap/control/plugin/cpolicy"
 	"github.com/intelsdi-x/snap/core"
 	"github.com/shirou/gopsutil/net"
-	"syscall"
-	"time"
 )
 
 const (
