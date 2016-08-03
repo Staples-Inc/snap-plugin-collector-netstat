@@ -49,7 +49,7 @@ func (netstat *netstatPlugin) GetMetricTypes(cfg plugin.ConfigType) (metrics []p
 	}
 
 	for name, _ := range fields {
-		ns := core.NewNamespace(vendor, "os", fs, name)
+		ns := core.NewNamespace(vendor, "procfs", fs, name)
 		metric := plugin.MetricType{
 			Namespace_: ns,
 			Data_:      nil,
