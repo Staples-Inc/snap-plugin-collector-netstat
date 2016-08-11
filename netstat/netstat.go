@@ -12,11 +12,11 @@ import (
 )
 
 const (
-	vendor     = "staples"
-	fs         = "netstat"
-	pluginName = "netstat"
-	version    = 1
-	pluginType = plugin.CollectorPluginType
+	vendor        = "staples"
+	fs            = "netstat"
+	pluginName    = "netstat"
+	pluginVersion = 1
+	pluginType    = plugin.CollectorPluginType
 )
 
 type netstatPlugin struct {
@@ -31,7 +31,7 @@ func New() *netstatPlugin {
 func Meta() *plugin.PluginMeta {
 	return plugin.NewPluginMeta(
 		pluginName,
-		version,
+		pluginVersion,
 		pluginType,
 		[]string{},
 		[]string{plugin.SnapGOBContentType},
