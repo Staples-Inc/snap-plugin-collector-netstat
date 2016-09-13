@@ -1,5 +1,21 @@
 package netstat
 
+/*
+Copyright 2016 Staples, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import (
 	"fmt"
 	"syscall"
@@ -19,11 +35,13 @@ const (
 	pluginType    = plugin.CollectorPluginType
 )
 
-type netstatPlugin struct {
+// NetstatCollector type
+type NetstatCollector struct {
 }
 
-func New() *netstatPlugin {
-	netstat := &netstatPlugin{}
+// New returns a new netstat plugin object
+func New() *NetstatCollector {
+	netstat := &NetstatCollector{}
 	return netstat
 }
 
@@ -38,17 +56,19 @@ func Meta() *plugin.PluginMeta {
 		plugin.ConcurrencyCount(1))
 }
 
-func (netstat *netstatPlugin) GetConfigPolicy() (*cpolicy.ConfigPolicy, error) {
+// GetConfigPolicy returns plugin configuration
+func (netstat *NetstatCollector) GetConfigPolicy() (*cpolicy.ConfigPolicy, error) {
 	return cpolicy.New(), nil
 }
 
-func (netstat *netstatPlugin) GetMetricTypes(cfg plugin.ConfigType) (metrics []plugin.MetricType, err error) {
+// GetMetricTypes returns MetricType slice collected by plugin
+func (netstat *NetstatCollector) GetMetricTypes(cfg plugin.ConfigType) (metrics []plugin.MetricType, err error) {
 	fields, err := getStats()
 	if err != nil {
 		return nil, fmt.Errorf("Error collecting metrics: %v", err)
 	}
 
-	for name, _ := range fields {
+	for name := range fields {
 		ns := core.NewNamespace(vendor, "procfs", fs, name)
 		metric := plugin.MetricType{
 			Namespace_: ns,
@@ -60,7 +80,8 @@ func (netstat *netstatPlugin) GetMetricTypes(cfg plugin.ConfigType) (metrics []p
 	return metrics, nil
 }
 
-func (netstat *netstatPlugin) CollectMetrics(metricTypes []plugin.MetricType) (metrics []plugin.MetricType, err error) {
+// CollectMetrics gathers netstat metrics
+func (netstat *NetstatCollector) CollectMetrics(metricTypes []plugin.MetricType) (metrics []plugin.MetricType, err error) {
 	fields, err := getStats()
 	if err != nil {
 		return nil, fmt.Errorf("Error collecting metrics: %v", err)
@@ -91,9 +112,10 @@ func getMapValueByNamespace(m map[string]interface{}, ns []string) (val interfac
 	}
 
 	current := ns[0]
-
+	var ok bool
 	if len(ns) == 1 {
-		if val, ok := m[current]; ok {
+		val, ok = m[current]
+		if ok {
 			return val, err
 		}
 		return val, fmt.Errorf("Key does not exist in map {key %s}", current)
