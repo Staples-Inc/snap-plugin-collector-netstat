@@ -1,11 +1,9 @@
+# snap collector plugin - netstat
+
 ## Getting Started
-The procstat collector takes a specified pid file and collects metrics from the process specified by that pid file.
-### Build
+The netstat collector collects information on the number of tcp connections on the host.
 
-Build the plugin by running make within the repo:
-```
-$ make
-```
-This builds the plugin in `/build/rootfs/`
+## Roadmap
+* Allow for custom specification of /proc/ path
 
-### Run
+If you have suggestions please open up an issue or provide a pull request.
