@@ -1,0 +1,10 @@
+package: github.com/Staples-Inc/snap-plugin-collector-netstat
+import:
+- package: github.com/intelsdi-x/snap
+  subpackages:
+  - control/plugin
+  - control/plugin/cpolicy
+  - core
+- package: github.com/shirou/gopsutil
+  subpackages:
+  - net

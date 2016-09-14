@@ -1,0 +1,33 @@
+hash: db48746fdb6d0e19ec9cd7ac00db0f02b0823bea4b3d87dd0f52c2d4a448dba1
+updated: 2016-09-14T13:48:48.548964056-04:00
+imports:
+- name: github.com/intelsdi-x/snap
+  version: 9a05d6629e21a2e4ff95f17ca365dd359bd1f278
+  subpackages:
+  - control/plugin
+  - control/plugin/cpolicy
+  - core
+  - control/plugin/encoding
+  - control/plugin/encrypter
+  - core/cdata
+  - core/ctypes
+  - pkg/ctree
+  - core/serror
+  - pkg/schedule
+  - scheduler/wmap
+- name: github.com/robfig/cron
+  version: 32d9c273155a0506d27cf73dd1246e86a470997e
+- name: github.com/shirou/gopsutil
+  version: 214acac9ea62a88654ad527432a5fcafc51072b9
+  subpackages:
+  - net
+  - internal/common
+- name: github.com/Sirupsen/logrus
+  version: be52937128b38f1d99787bb476c789e2af1147f1
+- name: golang.org/x/sys
+  version: 30de6d19a3bd89a5f38ae4028e23aaa5582648af
+  subpackages:
+  - unix
+- name: gopkg.in/yaml.v2
+  version: c1cd2254a6dd314c9d73c338c12688c9325d85c6
+devImports: []
