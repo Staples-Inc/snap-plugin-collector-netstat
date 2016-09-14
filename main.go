@@ -19,7 +19,7 @@ limitations under the License.
 import (
 	"os"
 
-	"github.com/intelsdi-x/snap-plugin-collector-netstat/netstat"
+	"github.com/Staples-Inc/snap-plugin-collector-netstat/netstat"
 	"github.com/intelsdi-x/snap/control/plugin"
 )
 
