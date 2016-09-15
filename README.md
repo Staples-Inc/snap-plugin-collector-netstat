@@ -1,6 +1,8 @@
 # snap collector plugin - netstat
 This plugin collects metrics from /proc/net to collect the number of TCP connections active on the host.
 
+[![Build Status](https://travis-ci.org/Staples-Inc/snap-plugin-collector-netstat.svg?branch=master)](https://travis-ci.org/Staples-Inc/snap-plugin-collector-netstat)
+
 ## Getting Started
 ### System Requirements
 * [golang 1.5+](https://golang.org/dl/) - needed only for building
