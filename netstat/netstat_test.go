@@ -19,21 +19,19 @@ limitations under the License.
 import (
 	"testing"
 
-	"github.com/intelsdi-x/snap/control/plugin"
+	"github.com/intelsdi-x/snap-plugin-lib-go/v1/plugin"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestNetstatPlugin(t *testing.T) {
-	meta := Meta()
-	Convey("Meta should return metadata for the plugin", t, func() {
-		Convey("So meta.Name should equal staplesfmt", func() {
-			So(meta.Name, ShouldEqual, "netstat")
-		})
-		Convey("So meta.Version should equal version", func() {
-			So(meta.Version, ShouldEqual, pluginVersion)
-		})
-		Convey("So meta.Type should be of type plugin.ProcessorPluginType", func() {
-			So(meta.Type, ShouldResemble, plugin.CollectorPluginType)
+	netstatCollector := NetstatCollector{}
+
+	Convey("Test NetstatCollector", t, func() {
+		Convey("GetMetricTypes Test", func() {
+			cfg := plugin.Config{}
+			metrics, err := netstatCollector.GetMetricTypes(cfg)
+			So(err, ShouldBeNil)
+			So(metrics, ShouldNotBeEmpty)
 		})
 	})
 }

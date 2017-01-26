@@ -1,5 +1,3 @@
-package netstat
-
 /*
 Copyright 2016 Staples, Inc.
 
@@ -15,92 +13,63 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+package netstat
 
 import (
 	"fmt"
 	"syscall"
 	"time"
 
-	"github.com/intelsdi-x/snap/control/plugin"
-	"github.com/intelsdi-x/snap/control/plugin/cpolicy"
-	"github.com/intelsdi-x/snap/core"
+	"github.com/intelsdi-x/snap-plugin-lib-go/v1/plugin"
 	"github.com/shirou/gopsutil/net"
 )
 
 const (
-	vendor        = "staples"
-	fs            = "netstat"
-	pluginName    = "netstat"
-	pluginVersion = 1
-	pluginType    = plugin.CollectorPluginType
+	vendor     = "staples"
+	pluginName = "netstat"
 )
 
 // NetstatCollector type
-type NetstatCollector struct {
+type NetstatCollector struct{}
+
+func (n *NetstatCollector) GetConfigPolicy() (plugin.ConfigPolicy, error) {
+	cpolicy := plugin.NewConfigPolicy()
+	return *cpolicy, nil
 }
 
-// New returns a new netstat plugin object
-func New() *NetstatCollector {
-	netstat := &NetstatCollector{}
-	return netstat
-}
-
-//Meta returns meta data for plugin
-func Meta() *plugin.PluginMeta {
-	return plugin.NewPluginMeta(
-		pluginName,
-		pluginVersion,
-		pluginType,
-		[]string{},
-		[]string{plugin.SnapGOBContentType},
-		plugin.ConcurrencyCount(1))
-}
-
-// GetConfigPolicy returns plugin configuration
-func (netstat *NetstatCollector) GetConfigPolicy() (*cpolicy.ConfigPolicy, error) {
-	return cpolicy.New(), nil
-}
-
-// GetMetricTypes returns MetricType slice collected by plugin
-func (netstat *NetstatCollector) GetMetricTypes(cfg plugin.ConfigType) (metrics []plugin.MetricType, err error) {
+func (n *NetstatCollector) GetMetricTypes(plugin.Config) ([]plugin.Metric, error) {
 	fields, err := getStats()
 	if err != nil {
 		return nil, fmt.Errorf("Error collecting metrics: %v", err)
 	}
 
+	metrics := make([]plugin.Metric, 0, len(fields))
 	for name := range fields {
-		ns := core.NewNamespace(vendor, "procfs", fs, name)
-		metric := plugin.MetricType{
-			Namespace_: ns,
-			Data_:      nil,
-			Timestamp_: time.Now(),
-		}
-		metrics = append(metrics, metric)
+		metrics = append(metrics, plugin.Metric{
+			Namespace: plugin.NewNamespace(vendor, "procfs", "netstat", name),
+			Timestamp: time.Now(),
+		})
 	}
 	return metrics, nil
 }
 
-// CollectMetrics gathers netstat metrics
-func (netstat *NetstatCollector) CollectMetrics(metricTypes []plugin.MetricType) (metrics []plugin.MetricType, err error) {
+func (n *NetstatCollector) CollectMetrics(mts []plugin.Metric) ([]plugin.Metric, error) {
 	fields, err := getStats()
 	if err != nil {
 		return nil, fmt.Errorf("Error collecting metrics: %v", err)
 	}
-
-	for _, metricType := range metricTypes {
-		ns := metricType.Namespace()
-
-		val, err := getMapValueByNamespace(fields, ns[3:].Strings())
+	metrics := make([]plugin.Metric, 0, len(mts))
+	for i := range mts {
+		val, err := getMapValueByNamespace(fields, mts[i].Namespace.Strings()[3:])
 		if err != nil {
-			return nil, fmt.Errorf("Error collecting metrics: %v", err)
+			return nil, fmt.Errorf("Error matching requested metrics: %v", err)
 		}
-
-		metric := plugin.MetricType{
-			Namespace_: ns,
-			Data_:      val,
-			Timestamp_: time.Now(),
-		}
-		metrics = append(metrics, metric)
+		metrics = append(metrics, plugin.Metric{
+			Namespace: mts[i].Namespace,
+			Timestamp: time.Now(),
+			Data:      val,
+			Tags:      mts[i].Tags,
+		})
 	}
 	return metrics, nil
 }

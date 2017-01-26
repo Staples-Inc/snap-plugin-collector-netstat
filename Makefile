@@ -5,6 +5,7 @@ deps:
 	go get -v github.com/Masterminds/glide
 	glide install
 test:
+	$(MAKE) deps
 	go test ./netstat -v
 check:
 	$(MAKE) test

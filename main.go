@@ -17,12 +17,15 @@ limitations under the License.
 */
 
 import (
-	"os"
-
 	"github.com/Staples-Inc/snap-plugin-collector-netstat/netstat"
-	"github.com/intelsdi-x/snap/control/plugin"
+	"github.com/intelsdi-x/snap-plugin-lib-go/v1/plugin"
+)
+
+var (
+	pluginName    = "netstat"
+	pluginVersion = 2
 )
 
 func main() {
-	plugin.Start(netstat.Meta(), netstat.New(), os.Args[1])
+	plugin.StartCollector(&netstat.NetstatCollector{}, pluginName, pluginVersion)
 }

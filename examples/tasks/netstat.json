@@ -1,46 +1,35 @@
 {
-    "version": 1,
     "schedule": {
-        "type": "simple",
-        "interval": "1s"
+        "interval": "1s",
+        "type": "simple"
     },
+    "version": 1,
     "workflow": {
         "collect": {
+            "config": {},
             "metrics": {
-                "/staples/procfs/netstat/tcp_close" : {},
-                "/staples/procfs/netstat/tcp_close_wait" : {},
-                "/staples/procfs/netstat/tcp_closing" : {},
-                "/staples/procfs/netstat/tcp_established" : {},
-                "/staples/procfs/netstat/tcp_fin_wait1" : {},
-                "/staples/procfs/netstat/tcp_fin_wait2" : {},
-                "/staples/procfs/netstat/tcp_last_ack" : {},
-                "/staples/procfs/netstat/tcp_listen" : {},
-                "/staples/procfs/netstat/tcp_none" : {},
-                "/staples/procfs/netstat/tcp_syn_recv" : {},
-                "/staples/procfs/netstat/tcp_syn_sent" : {},
-                "/staples/procfs/netstat/tcp_time_wait" : {},
-                "/staples/procfs/netstat/udp_socket" : {}
+                "/staples/procfs/netstat/tcp_close": {},
+                "/staples/procfs/netstat/tcp_close_wait": {},
+                "/staples/procfs/netstat/tcp_closing": {},
+                "/staples/procfs/netstat/tcp_established": {},
+                "/staples/procfs/netstat/tcp_fin_wait1": {},
+                "/staples/procfs/netstat/tcp_fin_wait2": {},
+                "/staples/procfs/netstat/tcp_last_ack": {},
+                "/staples/procfs/netstat/tcp_listen": {},
+                "/staples/procfs/netstat/tcp_none": {},
+                "/staples/procfs/netstat/tcp_syn_recv": {},
+                "/staples/procfs/netstat/tcp_syn_sent": {},
+                "/staples/procfs/netstat/tcp_time_wait": {},
+                "/staples/procfs/netstat/udp_socket": {}
             },
-            "config": {
-            },
-            "process": [
+            "publish": [
                 {
-                    "plugin_name": "passthru",
-                    "plugin_version": 1,
-                    "process": null,
-                    "publish": [
-                        {
-                            "plugin_name": "file",
-                            "plugin_version": 3,
-                            "config": {
-                                "file": "/tmp/snap-file.out"
-                            }
-                        }
-                    ],
-                    "config": null
+                    "config": {
+                        "file": "/tmp/snap-file.out"
+                    },
+                    "plugin_name": "file"
                 }
-            ],
-            "publish": null
+            ]
         }
     }
 }
